@@ -84,6 +84,8 @@ namespace gen {
 		// transfer results to the host array 'c'
 		queue.enqueue_read_buffer(ctx, 0, sz, data);
 		queue.finish();
+
+		return true;
 	}
 
 }
