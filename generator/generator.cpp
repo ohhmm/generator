@@ -1,5 +1,4 @@
 
-
 #include "gen.h"
 
 #include <omnn/math/Variable.h>
@@ -49,19 +48,21 @@ int main()
     std::cout << std::endl;
 
     std::cout << "Save the data?"  << std::endl;
-    char c;
-    std::cin >> c;
-    if(c == 'y' || c=='Y'){
-        std::cout << "Please, enter filename"  << std::endl;
-        std::string s;
-        std::cin >> s;
-        // serialize vector
-        {
-          std::ofstream ofs(s);
-          boost::archive::binary_oarchive oa(ofs);
-          oa & Y;
+    std::string s;
+    std::cin >> s;
+    if(s.size()){
+        char c = s[0];
+        if(c == 'y' || c=='Y'){
+            std::cout << "Please, enter filename"  << std::endl;
+            std::cin >> s;
+            // serialize vector
+            {
+                std::ofstream ofs(s);
+                boost::archive::binary_oarchive oa(ofs);
+                oa & Y;
+            }
+            std::cout << std::endl;
         }
-        std::cout << std::endl;
     }
     return 0;
 }
