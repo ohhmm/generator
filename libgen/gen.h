@@ -7,4 +7,5 @@ namespace gen {
 	omnn::math::Valuable BuildFormula(const std::string& s, const omnn::math::Valuable::vars_cont_t& knownValues, const omnn::math::Valuable::va_names_t& varNames = InitialVarNames());
 
 	bool Generate(const omnn::math::Valuable& pattern, float* data, unsigned n);
+	bool Generate(const omnn::math::Valuable& pattern, uint32_t* data, unsigned n);
 }

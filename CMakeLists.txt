@@ -14,6 +14,13 @@ option(OPENMIND_MATH_USE_LEVELDB_CACHE "OpenCL GPU calculations" OFF)
 set(OPENMIND_VERSION_TAG main CACHE STRING "OpenMind library version to use")
 set(OPENMIND_VERSION_TAG generator CACHE STRING "OpenMind library version to use")
 
+# Tell OpenMind to use any boost version installed in the system if any
+find_package(Boost)
+if(Boost_FOUND)
+    set(OPENMIND_REQUIRED_BOOST_VERSION ${Boost_VERSION} CACHE VERSION "Boost library version to use" FORCE)
+endif()
+set(BOOST_ADDITIONAL_COMPONENTS program_options CACHE VERSION "Boost components" FORCE)
+
 # Find some Git
 find_package(Git QUIET)
 if(NOT GIT_EXECUTABLE)
@@ -29,12 +36,6 @@ FetchContent_Declare(openmind
     GIT_REPOSITORY https://github.com/ohhmm/openmind.git
     GIT_TAG ${OPENMIND_VERSION_TAG})
 FetchContent_MakeAvailable(openmind)
-
-# Tell OpenMind to use any boost version installed in the system if any
-find_package(Boost)
-if(Boost_FOUND)
-    set(OPENMIND_REQUIRED_BOOST_VERSION ${Boost_VERSION} CACHE VERSION "Boost library version to use" FORCE)
-endif()
 
 # Include sub-projects, base component 'libgen' goes first.
 fold(
