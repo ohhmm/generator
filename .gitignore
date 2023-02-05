@@ -34,3 +34,7 @@
 /build*/
 /.vs*/
 /out/
+/.cproject
+/.project
+/.settings
+/CMakeSettings.json

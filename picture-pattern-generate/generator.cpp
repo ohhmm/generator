@@ -44,7 +44,8 @@ namespace {
 		r.eval(vars);
 		g.eval(vars);
 		b.eval(vars);
-		auto f = ((r * 256) + g) * 256 + b;
+		constexpr auto alpha = 0xff;
+		auto f =  ((g.And(8, 0xff) + (alpha << 8)).shl(8) + r.And(8, 0xff)).shl(8) + b.And(8, 0xff);
 		auto s = f.str();
 		return gen::BuildFormula(s, N);
 	}
@@ -75,7 +76,7 @@ int main()
     std::cout << "\nGenerated OpenCL code:\n" << openCLcode << std::endl;
 
 	auto N = width * height;
-	boost::gil::argb8_image_t img(width, height);
+	boost::gil::rgba8_image_t img(width, height);
 	auto v = view(img);
 	assert(v.is_1d_traversable());
 	auto p = v.begin().x();
