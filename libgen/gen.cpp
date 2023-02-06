@@ -108,4 +108,34 @@ namespace gen {
 		return true;
 	}
 
+	Valuable BuildFormulaAGRBofWidthHeightXYiN(uint32_t w, uint32_t h, Valuable r, Valuable g, Valuable b)
+	{
+		auto N = w * h;
+		Valuable::vars_cont_t vars = {
+			{"w"_va, w},
+			{"h"_va, h},
+			{"x"_va, i % w},
+			{"y"_va, (i - (i % w)) / w},
+			{n, N},
+			{"N"_va, N},
+		};
+		r.eval(vars);
+		g.eval(vars);
+		b.eval(vars);
+		constexpr auto alpha = 0xff;
+		auto f =  ((g.And(8, 0xff) + (alpha << 8)).shl(8) + r.And(8, 0xff)).shl(8) + b.And(8, 0xff);
+		auto s = f.str();
+		return gen::BuildFormula(s, N);
+	}
+
+	boost::gil::rgba8_image_t GeneratePatternImage(uint32_t width, uint32_t height, Valuable red, Valuable green, Valuable blue)
+	{
+		auto y = gen::BuildFormulaAGRBofWidthHeightXYiN(width, height, red, green, blue);
+		boost::gil::rgba8_image_t img(width, height);
+		auto v = view(img);
+		assert(v.is_1d_traversable());
+		auto p = v.begin().x();
+		gen::Generate(y, (uint32_t*)p, width * height);
+		return img;
+	}
 }

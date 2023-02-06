@@ -10,7 +10,11 @@ using namespace omnn::math;
 #include <boost/compute/core.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/gil.hpp>
+#include <boost/gil/extension/io/bmp.hpp>
 #include <boost/gil/extension/io/targa.hpp>
+#include <boost/gil/extension/io/png.hpp>
+// #include <boost/gil/extension/io/jpeg.hpp>
+
 #include <boost/lambda2.hpp>
 #include <boost/multiprecision/cpp_int.hpp>
 #include <boost/program_options.hpp>
@@ -24,34 +28,15 @@ namespace {
 	boost::filesystem::path filepath;
 	auto& desc = Options.add_options()
 		("help", "produce help message")
-		("file,f,o", boost::program_options::value(&filepath), "Load task description")
+		("file,f,o", boost::program_options::value(&filepath)->default_value("wow.tga"), "Load task description")
 		;
 	boost::program_options::variables_map vm;
-
-	DECL_VA(i);
-	auto BuildFormula(auto w, auto h, auto r, auto g, auto b)
-	{
-		auto N = w * h;
-		std::cout << "For i=[0;" << N << ") pattern f(i):" << std::endl;
-
-		Valuable::vars_cont_t vars = {
-			{"w"_va, w},
-			{"h"_va, h},
-			{"x"_va, i % w},
-			{"y"_va, (i - (i % w)) / w},
-			{"N"_va, N}
-		};
-		r.eval(vars);
-		g.eval(vars);
-		b.eval(vars);
-		constexpr auto alpha = 0xff;
-		auto f =  ((g.And(8, 0xff) + (alpha << 8)).shl(8) + r.And(8, 0xff)).shl(8) + b.And(8, 0xff);
-		auto s = f.str();
-		return gen::BuildFormula(s, N);
-	}
 }
-int main()
+int main(int argc, char** argv)
 {
+    boost::program_options::store(boost::program_options::parse_command_line(argc, argv, Options), vm);
+    boost::program_options::notify(vm);
+
 	auto width = 0, height = 0;
 	std::cout << "Image size (pixels):" << std::endl
 		<< " width="; std::cin >> width;
@@ -61,6 +46,7 @@ int main()
 	std::string str;
 	std::cout << "Image pattern (formulas for channels of width, height, x, y):" << std::endl
 		<< " Red(w,h,x,y)="; std::cin >> str;
+	auto& i = gen::InitialVarNames().begin()->second;
 	auto varhost = i.getVaHost();
 	Valuable red(str, varhost);
 	std::cout << std::endl << " Green(w,h,x,y)="; std::cin >> str;
@@ -69,20 +55,27 @@ int main()
 	Valuable blue(str, varhost);
     std::cout << std::endl;
 
+	auto img = gen::GeneratePatternImage(width, height, red, green, blue);
+	auto v = boost::gil::view(img);
 
-	auto y = BuildFormula(width, height, red, green, blue);
-    std::cout << "Y = " << y << std::endl;
-    auto openCLcode = y.OpenCLuint();
-    std::cout << "\nGenerated OpenCL code:\n" << openCLcode << std::endl;
-
-	auto N = width * height;
-	boost::gil::rgba8_image_t img(width, height);
-	auto v = view(img);
-	assert(v.is_1d_traversable());
-	auto p = v.begin().x();
-	gen::Generate(y, (uint32_t*)p, N);
-
-	boost::gil::write_view("wow.tga", v, boost::gil::targa_tag());
+	auto ext = filepath.extension();
+	if(ext == ".bmp"){
+		boost::gil::write_view(filepath.c_str(), v, boost::gil::bmp_tag());
+		std::cout << filepath << " written" << std::endl;
+	// } else if(ext == ".png") {
+	// 	boost::gil::write_view(filepath.c_str(), v, boost::gil::png_tag());
+	// 	std::cout << filepath << " written" << std::endl;
+	// } else if(ext == ".jpg" || ext == ".jpeg") {
+	// 	boost::gil::write_view(filepath.c_str(), v, boost::gil::jpeg_tag());
+	// 	std::cout << filepath << " written" << std::endl;
+	} else if(ext != ".tga") {
+		std::cout << ext << " extension is not supported, using TGA instead" << std::endl;
+		filepath.replace_extension(".tga");
+	}
+	if(ext == ".tga"){
+		boost::gil::write_view(filepath.c_str(), v, boost::gil::targa_tag());
+		std::cout << filepath << " written" << std::endl;
+	}
 
     return 0;
 }
