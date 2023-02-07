@@ -1,2 +1,2 @@
 # generator
-Generator of datasets
+Generator of datasets and graphics

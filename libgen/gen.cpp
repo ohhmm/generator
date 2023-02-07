@@ -1,5 +1,6 @@
 
 #include <omnn/math/Variable.h>
+#include <omnn/rt/cl.h>
 using namespace omnn::math;
 
 #include <boost/archive/binary_oarchive.hpp>
@@ -14,32 +15,13 @@ using namespace omnn::math;
 
 
 namespace {
-	auto ComputeUnitsWinner = []() -> boost::compute::device {
-		auto devices = boost::compute::system::devices();
-		if (devices.size() == 0) {
-			std::cout << "Please, install an OpenCL driver." << std::endl;
-			exit(-1);
-		}
-
-		auto cuwinner = boost::compute::system::default_device();
-		for (auto& p : boost::compute::system::platforms()) {
-			for (auto& d : p.devices()) {
-				std::cout << d.name() << ':' << d.compute_units() << std::endl;
-				if (d.compute_units() > cuwinner.compute_units())
-					cuwinner = d;
-			}
-		}
-
-		std::cout << "max_work_group_size: " << cuwinner.max_work_group_size() << std::endl;
-
-		return cuwinner;
-	}();
+	auto ComputeUnitsWinner = omnn::rt::GetComputeUnitsWinnerDevice();
 
 	DECL_VA(i);
 	DECL_VA(n);
 
 	Valuable::va_names_t Names = {
-		{"i", i}, 
+		{"i", i},
 		{"N", n},
 		{"n", n}
 	};
