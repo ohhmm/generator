@@ -12,7 +12,7 @@ using namespace omnn::math;
 #include <boost/gil.hpp>
 #include <boost/gil/extension/io/bmp.hpp>
 #include <boost/gil/extension/io/targa.hpp>
-#include <boost/gil/extension/io/png.hpp>
+//#include <boost/gil/extension/io/png.hpp>
 // #include <boost/gil/extension/io/jpeg.hpp>
 
 #include <boost/lambda2.hpp>
@@ -25,10 +25,8 @@ using namespace omnn::math;
 int main(int argc, char** argv)
 {
     auto& programOptionValues = gen::Init(argc, argv);
-	auto& backgroundColorOption = programOptionValues["background-color"];
-	auto& filePathOption = programOptionValues["file"];
-	auto filepath = filePathOption.as<boost::filesystem::path>();
-	std::cout << "BG: " << backgroundColorOption.as<uint32_t>() << std::endl;
+	auto filepath = programOptionValues.filepath;
+	std::cout << "BG: " << programOptionValues.color << std::endl;
 
 	auto width = 0, height = 0;
 	std::cout << "Image size (pixels):" << std::endl
@@ -42,9 +40,9 @@ int main(int argc, char** argv)
 	auto& i = gen::InitialVarNames().begin()->second;
 	auto varhost = i.getVaHost();
 	Valuable red(str, varhost);
-	std::cout << std::endl << " Green(w,h,x,y)="; std::cin >> str;
+	std::cout << " Green(w,h,x,y)="; std::cin >> str;
 	Valuable green(str, varhost);
-	std::cout << std::endl << " Blue(w,h,x,y)="; std::cin >> str;
+	std::cout << " Blue(w,h,x,y)="; std::cin >> str;
 	Valuable blue(str, varhost);
     std::cout << std::endl;
 

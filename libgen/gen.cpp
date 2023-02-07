@@ -15,7 +15,6 @@ using namespace omnn::math;
 
 
 namespace {
-	auto ComputeUnitsWinner = omnn::rt::GetComputeUnitsWinnerDevice();
 
 	DECL_VA(i);
 	DECL_VA(n);
@@ -27,19 +26,18 @@ namespace {
 	};
 
 	boost::program_options::options_description Options("Options");
-	boost::filesystem::path filepath;
-	uint32_t color = 0;
+	gen::options optionValues;
 	auto& desc = Options.add_options()
 		("help,h", "Produce help message")
-		("file,f,o", boost::program_options::value(&filepath)->default_value("wow.tga"), "Output file path")
-		("background-color,background-colour,background,b,bc,bg,bgc", boost::program_options::value(&color)->default_value(0), "Image background color")
+		("file,f,o", boost::program_options::value(&optionValues.filepath)->default_value("wow.tga"), "Output file path")
+		("background-color,background-colour,background,b,bc,bg,bgc", boost::program_options::value(&optionValues.color)->default_value(0), "Image background color")
 		;
 	boost::program_options::variables_map vm;
 
 }
 
 namespace gen {
-	const boost::program_options::variables_map& Init(int argc, char** argv)
+	const options& Init(int argc, char** argv)
 	{
 		boost::program_options::store(boost::program_options::parse_command_line(argc, argv, Options), vm);
 		boost::program_options::notify(vm);
@@ -47,6 +45,7 @@ namespace gen {
 			std::cout << "Usage: options_description [options]\n" << Options;
 			exit(0);
 		}
+		return optionValues;
 	}
 
 	const Valuable::va_names_t& InitialVarNames() {
@@ -78,6 +77,7 @@ namespace gen {
 
 	bool Generate(const Valuable& pattern, float* data, unsigned wgsz) {
 		// build OpenCL kernel
+		auto& ComputeUnitsWinner = omnn::rt::GetComputeUnitsWinnerDevice();
 		boost::compute::context context(ComputeUnitsWinner);
 		boost::compute::command_queue queue(context, ComputeUnitsWinner);
 		boost::compute::kernel k(boost::compute::program::build_with_source(pattern.OpenCL(), context), "f");
@@ -98,6 +98,7 @@ namespace gen {
 
 	bool Generate(const Valuable& pattern, uint32_t* data, unsigned wgsz) {
 		// build OpenCL kernel
+		auto& ComputeUnitsWinner = omnn::rt::GetComputeUnitsWinnerDevice();
 		boost::compute::context context(ComputeUnitsWinner);
 		boost::compute::command_queue queue(context, ComputeUnitsWinner);
 		boost::compute::kernel k(boost::compute::program::build_with_source(pattern.OpenCL(), context), "f");
@@ -131,6 +132,9 @@ namespace gen {
 		g.eval(vars);
 		b.eval(vars);
 		constexpr auto alpha = 0xff;
+
+		// FIXME: slow masks
+		//auto f =  ((g.And(8, 0xff) + (alpha << 8)).shl(8) + r.And(8, 0xff)).shl(8) + b.And(8, 0xff);
 		auto f =  (((g % 256) + (alpha << 8)).shl(8) + (r%256)).shl(8) + (b%256);
 		auto s = f.str();
 		return gen::BuildFormula(s, N);

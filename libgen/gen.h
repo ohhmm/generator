@@ -1,10 +1,16 @@
+#include <boost/filesystem.hpp>
 #include <boost/gil.hpp>
 #include <boost/program_options.hpp>
 #include <omnn/math/Variable.h>
 
 
 namespace gen {
-	const boost::program_options::variables_map& Init(int argc, char** argv); // optional, for options
+	struct options {
+		boost::filesystem::path filepath;
+		uint32_t color = 0;
+	};
+
+	const options& Init(int argc, char** argv); // optional, for options
 
 	const omnn::math::Valuable::va_names_t& InitialVarNames();
 	omnn::math::Valuable BuildFormula(const std::string& s, const omnn::math::Valuable::va_names_t& varNames = InitialVarNames());
