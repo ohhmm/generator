@@ -1,7 +1,14 @@
 #include <boost/gil.hpp>
 #include <omnn/math/Variable.h>
 
+
+namespace boost::program_options {
+	class variables_map;
+}
+
 namespace gen {
+	const boost::program_options::variables_map& Init(int argc, char** argv); // optional, for options
+
 	const omnn::math::Valuable::va_names_t& InitialVarNames();
 	omnn::math::Valuable BuildFormula(const std::string& s, const omnn::math::Valuable::va_names_t& varNames = InitialVarNames());
 	omnn::math::Valuable BuildFormula(const std::string& s, const omnn::math::Valuable& n, const omnn::math::Valuable::va_names_t& varNames = InitialVarNames());

@@ -5,6 +5,7 @@ using namespace omnn::math;
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/compute.hpp>
 #include <boost/compute/core.hpp>
+#include <boost/filesystem.hpp>
 #include <boost/lambda2.hpp>
 #include <boost/multiprecision/cpp_int.hpp>
 #include <boost/program_options.hpp>
@@ -13,9 +14,6 @@ using namespace omnn::math;
 
 
 namespace {
-	DECL_VA(i);
-	DECL_VA(n);
-
 	auto ComputeUnitsWinner = []() -> boost::compute::device {
 		auto devices = boost::compute::system::devices();
 		if (devices.size() == 0) {
@@ -36,12 +34,40 @@ namespace {
 
 		return cuwinner;
 	}();
+
+	DECL_VA(i);
+	DECL_VA(n);
+
+	Valuable::va_names_t Names = {
+		{"i", i}, 
+		{"N", n},
+		{"n", n}
+	};
+
+	boost::program_options::options_description Options("Options");
+	boost::filesystem::path filepath;
+	uint32_t color = 0;
+	auto& desc = Options.add_options()
+		("help,h", "Produce help message")
+		("file,f,o", boost::program_options::value(&filepath)->default_value("wow.tga"), "Output file path")
+		("background-color,background-colour,background,b,bc,bg,bgc", boost::program_options::value(&color)->default_value(0), "Image background color")
+		;
+	boost::program_options::variables_map vm;
+
 }
 
 namespace gen {
+	const boost::program_options::variables_map& Init(int argc, char** argv)
+	{
+		boost::program_options::store(boost::program_options::parse_command_line(argc, argv, Options), vm);
+		boost::program_options::notify(vm);
+		if (vm.count("help")) {
+			std::cout << "Usage: options_description [options]\n" << Options;
+			exit(0);
+		}
+	}
 
 	const Valuable::va_names_t& InitialVarNames() {
-		static Valuable::va_names_t Names = { {"i", i}, {"n", n} };
 		return Names;
 	}
 
@@ -123,7 +149,7 @@ namespace gen {
 		g.eval(vars);
 		b.eval(vars);
 		constexpr auto alpha = 0xff;
-		auto f =  ((g.And(8, 0xff) + (alpha << 8)).shl(8) + r.And(8, 0xff)).shl(8) + b.And(8, 0xff);
+		auto f =  (((g % 256) + (alpha << 8)).shl(8) + (r%256)).shl(8) + (b%256);
 		auto s = f.str();
 		return gen::BuildFormula(s, N);
 	}

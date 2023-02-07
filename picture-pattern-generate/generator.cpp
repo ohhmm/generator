@@ -22,20 +22,13 @@ using namespace omnn::math;
 #include <string>
 
 
-
-namespace {
-	boost::program_options::options_description Options("Options");
-	boost::filesystem::path filepath;
-	auto& desc = Options.add_options()
-		("help", "produce help message")
-		("file,f,o", boost::program_options::value(&filepath)->default_value("wow.tga"), "Load task description")
-		;
-	boost::program_options::variables_map vm;
-}
 int main(int argc, char** argv)
 {
-    boost::program_options::store(boost::program_options::parse_command_line(argc, argv, Options), vm);
-    boost::program_options::notify(vm);
+    auto& programOptionValues = gen::Init(argc, argv);
+	auto& backgroundColorOption = programOptionValues["background-color"];
+	auto& filePathOption = programOptionValues["file"];
+	auto filepath = filePathOption.as<boost::filesystem::path>();
+	std::cout << "BG: " << backgroundColorOption.as<uint32_t>() << std::endl;
 
 	auto width = 0, height = 0;
 	std::cout << "Image size (pixels):" << std::endl
