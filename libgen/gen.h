@@ -1,10 +1,7 @@
 #include <boost/gil.hpp>
+#include <boost/program_options.hpp>
 #include <omnn/math/Variable.h>
 
-
-namespace boost::program_options {
-	class variables_map;
-}
 
 namespace gen {
 	const boost::program_options::variables_map& Init(int argc, char** argv); // optional, for options
