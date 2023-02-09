@@ -1,5 +1,9 @@
 
 exe(libgen
-	#glennrp/libpng
-	#PNG::PNG
+
+	libjpeg-turbo/libjpeg-turbo
+	libjpeg-turbo::turbojpeg-static
+
+	glennrp/libpng
+	PNG::PNG
 	)

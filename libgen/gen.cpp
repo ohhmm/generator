@@ -137,6 +137,14 @@ namespace gen {
 		//auto f =  ((g.And(8, 0xff) + (alpha << 8)).shl(8) + r.And(8, 0xff)).shl(8) + b.And(8, 0xff);
 		auto f =  (((g % 256) + (alpha << 8)).shl(8) + (r%256)).shl(8) + (b%256);
 		auto s = f.str();
+		#ifndef NOOMDEBUG
+		std::cout << " R:" << r << " G:" << g << " B:" << b << std::endl;
+		if(f.IsInt())
+			std::cout << std::hex << f.ca();
+		else
+			std::cout << s;
+		std::cout << std::endl;
+		#endif
 		return gen::BuildFormula(s, N);
 	}
 
