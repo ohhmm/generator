@@ -12,8 +12,8 @@ using namespace omnn::math;
 #include <boost/gil.hpp>
 #include <boost/gil/extension/io/bmp.hpp>
 #include <boost/gil/extension/io/targa.hpp>
-//#include <boost/gil/extension/io/png.hpp>
-// #include <boost/gil/extension/io/jpeg.hpp>
+#include <boost/gil/extension/io/png.hpp>
+#include <boost/gil/extension/io/jpeg.hpp>
 
 #include <boost/lambda2.hpp>
 #include <boost/multiprecision/cpp_int.hpp>
@@ -50,16 +50,23 @@ int main(int argc, char** argv)
 	auto v = boost::gil::view(img);
 
 	auto ext = filepath.extension();
-	if(ext == ".bmp"){
+	if (ext == ".bmp") {
 		boost::gil::write_view(filepath.c_str(), v, boost::gil::bmp_tag());
 		std::cout << filepath << " written" << std::endl;
-	// } else if(ext == ".png") {
-	// 	boost::gil::write_view(filepath.c_str(), v, boost::gil::png_tag());
-	// 	std::cout << filepath << " written" << std::endl;
-	// } else if(ext == ".jpg" || ext == ".jpeg") {
-	// 	boost::gil::write_view(filepath.c_str(), v, boost::gil::jpeg_tag());
-	// 	std::cout << filepath << " written" << std::endl;
-	} else if(ext != ".tga") {
+	}
+	//else if (ext == ".png") {
+	//	boost::gil::write_view(filepath.c_str(), v, boost::gil::png_tag());
+	//	std::cout << filepath << " written" << std::endl;
+	//}
+	else if (ext == ".jpg" || ext == ".jpeg") {
+		std::ofstream file(filepath.c_str(), std::ios_base::out | std::ios_base::binary);
+		boost::gil::rgb8_image_t jpgImg;
+		auto jpgView = view(jpgImg);
+		copy_and_convert_pixels(v, jpgView); 
+		boost::gil::write_view(file, jpgView, boost::gil::jpeg_tag());
+		std::cout << filepath << " written" << std::endl;
+	}
+	else if (ext != ".tga") {
 		std::cout << ext << " extension is not supported, using TGA instead" << std::endl;
 		filepath.replace_extension(".tga");
 	}
