@@ -39,3 +39,4 @@
 /.settings
 /CMakeSettings.json
 .cache/
+.idea/

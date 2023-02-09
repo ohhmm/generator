@@ -1,2 +1,4 @@
 
-lib(math)
+lib(math
+    Boost::program_options
+    )

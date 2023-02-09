@@ -9,7 +9,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(OPENMIND_DEBUG_CHECKS "Additional debug checks" OFF)
 set(OPENMIND_USE_OPENCL ON CACHE BOOL "OpenCL GPU calculations" FORCE)
-option(OPENMIND_MATH_USE_LEVELDB_CACHE "Cache calculation results with LevelDB" OFF)
+option(OPENMIND_MATH_USE_LEVELDB_CACHE "Cache calculation results with LevelDB" ON)
 
 set(OPENMIND_VERSION_TAG main CACHE STRING "OpenMind library version to use")
 set(OPENMIND_VERSION_TAG generator CACHE STRING "OpenMind library version to use")
@@ -17,9 +17,9 @@ set(OPENMIND_VERSION_TAG generator CACHE STRING "OpenMind library version to use
 # Tell OpenMind to use any boost version installed in the system if any
 find_package(Boost)
 if(Boost_FOUND)
-    set(OPENMIND_REQUIRED_BOOST_VERSION ${Boost_VERSION} CACHE STRING "Boost library version to use" FORCE)
+    set(OPENMIND_REQUIRED_BOOST_VERSION ${Boost_VERSION} CACHE STRING "Boost library version to use")
 endif()
-set(BOOST_ADDITIONAL_COMPONENTS program_options CACHE STRING "Boost components" FORCE)
+set(BOOST_ADDITIONAL_COMPONENTS program_options CACHE STRING "Boost components")
 
 # Find some Git
 find_package(Git QUIET)
