@@ -1,3 +1,7 @@
+if(MSVC)
+	option(PNG_SHARED "Build shared lib" OFF)
+endif()
+option(PNG_STATIC "Build static lib" ON)
 
 exe(libgen
 
@@ -7,5 +11,5 @@ exe(libgen
 	madler/zlib
 
 	glennrp/libpng
-	PNG::PNG
+	PNG::PNG_STATIC
 	)

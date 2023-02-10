@@ -29,7 +29,7 @@ namespace {
 	gen::options optionValues;
 	auto& desc = Options.add_options()
 		("help,h", "Produce help message")
-		("file,f,o", boost::program_options::value(&optionValues.filepath)->default_value("wow.tga"), "Output file path")
+		("file,f,o", boost::program_options::value(&optionValues.filepath)->default_value("wow.png"), "Output file path")
 		("background-color,background-colour,background,b,bc,bg,bgc", boost::program_options::value(&optionValues.color)->default_value(0), "Image background color")
 		;
 	boost::program_options::variables_map vm;

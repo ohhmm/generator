@@ -54,13 +54,13 @@ int main(int argc, char** argv)
 		boost::gil::write_view(filepath.c_str(), v, boost::gil::bmp_tag());
 		std::cout << filepath << " written" << std::endl;
 	}
-	//else if (ext == ".png") {
-	//	boost::gil::write_view(filepath.c_str(), v, boost::gil::png_tag());
-	//	std::cout << filepath << " written" << std::endl;
-	//}
+	else if (ext == ".png") {
+		boost::gil::write_view(filepath.c_str(), v, boost::gil::png_tag());
+		std::cout << filepath << " written" << std::endl;
+	}
 	else if (ext == ".jpg" || ext == ".jpeg") {
 		std::ofstream file(filepath.c_str(), std::ios_base::out | std::ios_base::binary);
-		boost::gil::rgb8_image_t jpgImg;
+		boost::gil::rgb8_image_t jpgImg(v.dimensions());
 		auto jpgView = view(jpgImg);
 		copy_and_convert_pixels(v, jpgView); 
 		boost::gil::write_view(file, jpgView, boost::gil::jpeg_tag());
