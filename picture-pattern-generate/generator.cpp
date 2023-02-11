@@ -22,6 +22,14 @@ using namespace omnn::math;
 #include <string>
 
 
+namespace {
+	std::string StdIn(std::string_view name) {
+		std::string str;
+		std::cout << ' ' << name << '=';
+		do { std::cin >> str; } while (str.empty());
+		return str;
+	}
+}
 int main(int argc, char** argv)
 {
 	using namespace std::string_view_literals;
@@ -36,17 +44,12 @@ int main(int argc, char** argv)
 	std::cout << " height="; std::cin >> height;
 	std::cout << std::endl;
 
-	std::string str;
-	std::cout << "Image pattern (formulas for channels of width, height, x, y):" << std::endl
-		<< " Red(w,h,x,y)="; std::cin >> str;
+	std::cout << "Image pattern (formulas for channels of width, height, x, y):" << std::endl;
 	auto names = gen::InitialVarNames();
-	auto& i = names[{"i"sv}];
-	auto varhost = i.getVaHost();
-	Valuable red(str, varhost);
-	std::cout << " Green(w,h,x,y)="; std::cin >> str;
-	Valuable green(str, varhost);
-	std::cout << " Blue(w,h,x,y)="; std::cin >> str;
-	Valuable blue(str, varhost);
+	auto varhost = names.begin()->second.getVaHost();
+	Valuable red(StdIn("Red(w,h,x,y)"), varhost);
+	Valuable green(StdIn("Green(w,h,x,y)"), varhost);
+	Valuable blue(StdIn("Blue(w,h,x,y)"), varhost);
     std::cout << std::endl;
 
 	auto img = gen::GeneratePatternImage(width, height, red, green, blue);
