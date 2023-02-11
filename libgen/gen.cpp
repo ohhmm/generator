@@ -143,7 +143,8 @@ namespace gen {
 
 		// FIXME: slow masks
 		//auto f =  ((g.And(8, 0xff) + (alpha << 8)).shl(8) + r.And(8, 0xff)).shl(8) + b.And(8, 0xff);
-		auto f =  (((g % 256) + (alpha << 8)).shl(8) + (r%256)).shl(8) + (b%256);
+		auto f = (((b % 256) + (alpha << 8)).shl(8) + (g % 256)).shl(8) + (r % 256);
+					//^-r									^-b					^-g
 		auto s = f.str();
 		#ifndef NOOMDEBUG
 		std::cout << " R:" << r << " G:" << g << " B:" << b << std::endl;
