@@ -80,17 +80,21 @@ namespace gen {
 		auto& ComputeUnitsWinner = omnn::rt::GetComputeUnitsWinnerDevice();
 		boost::compute::context context(ComputeUnitsWinner);
 		boost::compute::command_queue queue(context, ComputeUnitsWinner);
-		boost::compute::kernel k(boost::compute::program::build_with_source(pattern.OpenCL(), context), "f");
+		auto code = pattern.OpenCL();
+#ifndef NOOMDEBUG
+		std::cout << pattern << " >>> OpenCl >>> " << code << std::endl;
+#endif // !NOOMDEBUG
+		boost::compute::kernel k(boost::compute::program::build_with_source(code, context), "f");
 
 		auto sz = wgsz * sizeof(cl_float);
 		boost::compute::buffer ctx(context, sz);
 		k.set_arg(0, ctx);
 
 		// run the add kernel
-		queue.enqueue_1d_range_kernel(k, 0, wgsz, 0);
-
+		auto ready = queue.enqueue_1d_range_kernel(k, 0, wgsz, 0);
+		queue.finish();
 		// transfer results to the host array 'c'
-		queue.enqueue_read_buffer(ctx, 0, sz, data);
+		queue.enqueue_read_buffer(ctx, 0, sz, data, { ready });
 		queue.finish();
 
 		return true;
@@ -101,17 +105,21 @@ namespace gen {
 		auto& ComputeUnitsWinner = omnn::rt::GetComputeUnitsWinnerDevice();
 		boost::compute::context context(ComputeUnitsWinner);
 		boost::compute::command_queue queue(context, ComputeUnitsWinner);
-		boost::compute::kernel k(boost::compute::program::build_with_source(pattern.OpenCL(), context), "f");
+		auto code = pattern.OpenCLuint();
+#ifndef NOOMDEBUG
+		std::cout << pattern << " >>> OpenCl >>> " << code << std::endl;
+#endif // !NOOMDEBUG
+		boost::compute::kernel k(boost::compute::program::build_with_source(code, context), "f");
 
 		auto sz = wgsz * sizeof(cl_uint);
 		boost::compute::buffer ctx(context, sz);
 		k.set_arg(0, ctx);
 
 		// run the add kernel
-		queue.enqueue_1d_range_kernel(k, 0, wgsz, 0);
-
+		auto ready = queue.enqueue_1d_range_kernel(k, 0, wgsz, 0);
+		queue.finish();
 		// transfer results to the host array 'c'
-		queue.enqueue_read_buffer(ctx, 0, sz, data);
+		queue.enqueue_read_buffer(ctx, 0, sz, data, { ready });
 		queue.finish();
 
 		return true;

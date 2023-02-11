@@ -24,6 +24,8 @@ using namespace omnn::math;
 
 int main(int argc, char** argv)
 {
+	using namespace std::string_view_literals;
+
     auto& programOptionValues = gen::Init(argc, argv);
 	auto filepath = programOptionValues.filepath;
 	std::cout << "BG: " << programOptionValues.color << std::endl;
@@ -37,7 +39,8 @@ int main(int argc, char** argv)
 	std::string str;
 	std::cout << "Image pattern (formulas for channels of width, height, x, y):" << std::endl
 		<< " Red(w,h,x,y)="; std::cin >> str;
-	auto& i = gen::InitialVarNames().begin()->second;
+	auto names = gen::InitialVarNames();
+	auto& i = names[{"i"sv}];
 	auto varhost = i.getVaHost();
 	Valuable red(str, varhost);
 	std::cout << " Green(w,h,x,y)="; std::cin >> str;
