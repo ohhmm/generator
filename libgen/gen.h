@@ -10,6 +10,8 @@ namespace gen {
 		uint32_t color = 0;
 	};
 
+	boost::program_options::options_description_easy_init& ProgramOptionsDescription();
+
 	const options& Init(int argc, char** argv); // optional, for options
 
 	const omnn::math::Valuable::va_names_t& InitialVarNames();
