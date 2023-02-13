@@ -37,6 +37,11 @@ namespace {
 }
 
 namespace gen {
+
+	boost::program_options::options_description_easy_init& ProgramOptionsDescription() {
+		return desc;
+	}
+
 	const options& Init(int argc, char** argv)
 	{
 		boost::program_options::store(boost::program_options::parse_command_line(argc, argv, Options), vm);
