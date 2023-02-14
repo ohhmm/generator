@@ -61,7 +61,7 @@ namespace gen {
 		auto names = varNames;
 		names["i"] = i;
         names["n"] = n;
-		Valuable pattern(s, names);
+		Valuable pattern(s, names, true);
 		return pattern;
 	}
 

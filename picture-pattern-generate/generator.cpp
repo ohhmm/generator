@@ -26,7 +26,7 @@ namespace {
 	std::string StdIn(std::string_view name) {
 		std::string str;
 		std::cout << ' ' << name << '=';
-		do { std::cin >> str; } while (str.empty());
+		do { std::getline(std::cin, str); } while (str.empty());
 		return str;
 	}
 }
@@ -47,9 +47,9 @@ int main(int argc, char** argv)
 	std::cout << "Image pattern (formulas for channels of width, height, x, y):" << std::endl;
 	auto names = gen::InitialVarNames();
 	auto varhost = names.begin()->second.getVaHost();
-	Valuable red(StdIn("Red(w,h,x,y)"), varhost);
-	Valuable green(StdIn("Green(w,h,x,y)"), varhost);
-	Valuable blue(StdIn("Blue(w,h,x,y)"), varhost);
+	Valuable red(StdIn("Red(w,h,x,y)"), varhost, true);
+	Valuable green(StdIn("Green(w,h,x,y)"), varhost, true);
+	Valuable blue(StdIn("Blue(w,h,x,y)"), varhost, true);
     std::cout << std::endl;
 
 	auto img = gen::GeneratePatternImage(width, height, red, green, blue);
