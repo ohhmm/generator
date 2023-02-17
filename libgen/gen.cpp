@@ -18,11 +18,15 @@ namespace {
 
 	DECL_VA(i);
 	DECL_VA(n);
+	DECL_VA(was);
+	DECL_VA(Result);
 
 	Valuable::va_names_t Names = {
 		{"i", i},
 		{"N", n},
-		{"n", n}
+		{"n", n},
+		{"was", was},
+		{"Result", was}
 	};
 
 	boost::program_options::options_description Options("Options");
@@ -61,6 +65,8 @@ namespace gen {
 		auto names = varNames;
 		names["i"] = i;
         names["n"] = n;
+		names["was"] = was;
+		names["Result"] = was;
 		Valuable pattern(s, names, true);
 		return pattern;
 	}
@@ -92,7 +98,9 @@ namespace gen {
 		boost::compute::kernel k(boost::compute::program::build_with_source(code, context), "f");
 
 		auto sz = wgsz * sizeof(cl_float);
-		boost::compute::buffer ctx(context, sz);
+		boost::compute::buffer ctx(context, sz,
+			boost::compute::memory_object::read_write | boost::compute::memory_object::use_host_ptr,
+			data);
 		k.set_arg(0, ctx);
 
 		// run the add kernel
@@ -117,7 +125,9 @@ namespace gen {
 		boost::compute::kernel k(boost::compute::program::build_with_source(code, context), "f");
 
 		auto sz = wgsz * sizeof(cl_uint);
-		boost::compute::buffer ctx(context, sz);
+		boost::compute::buffer ctx(context, sz,
+			boost::compute::memory_object::read_write | boost::compute::memory_object::use_host_ptr,
+			data);
 		k.set_arg(0, ctx);
 
 		// run the add kernel
@@ -140,6 +150,7 @@ namespace gen {
 			{"y"_va, (i - (i % w)) / w},
 			{n, N},
 			{"N"_va, N},
+			{Result, was},
 		};
 		r.eval(vars);
 		g.eval(vars);
@@ -166,6 +177,12 @@ namespace gen {
 		auto y = gen::BuildFormulaAGRBofWidthHeightXYiN(width, height, red, green, blue);
 		boost::gil::rgba8_image_t img(width, height);
 		auto v = view(img);
+		#if 0
+		auto i = 0;
+		for (auto& px : v) {
+			boost::gil::get_color(px, boost::gil::red_t())= i++;
+		}
+		#endif
 		assert(v.is_1d_traversable());
 		auto p = v.begin().x();
 		gen::Generate(y, (uint32_t*)p, width * height);
