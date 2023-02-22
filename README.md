@@ -18,6 +18,7 @@ Image pattern (formulas for channels of width, height, x, y):
  Red(w,h,x,y)=(x-w)*(y-h)
 
  Green(w,h,x,y)=(x-w)*(y-h)
+
  Blue(w,h,x,y)=(x-w)*(y-h)
 
 "wow.png" written

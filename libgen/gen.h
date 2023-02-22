@@ -1,3 +1,4 @@
+#include <vector>
 #include <boost/filesystem.hpp>
 #include <boost/gil.hpp>
 #include <boost/program_options.hpp>
@@ -8,6 +9,7 @@ namespace gen {
 	struct options {
 		boost::filesystem::path filepath;
 		uint32_t color = 0;
+		std::vector<boost::filesystem::path> blend_files;
 	};
 
 	boost::program_options::options_description_easy_init& ProgramOptionsDescription();

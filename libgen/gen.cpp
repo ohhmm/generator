@@ -8,6 +8,7 @@ using namespace omnn::math;
 #include <boost/compute/core.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/lambda2.hpp>
+#include <boost/mpl/vector.hpp>
 #include <boost/multiprecision/cpp_int.hpp>
 #include <boost/program_options.hpp>
 #include <boost/serialization/vector.hpp>
@@ -35,6 +36,7 @@ namespace {
 		("help,h", "Produce help message")
 		("file,f,o", boost::program_options::value(&optionValues.filepath)->default_value("wow.png"), "Output file path")
 		("background-color,background-colour,background,b,bc,bg,bgc", boost::program_options::value(&optionValues.color)->default_value(0), "Image background color")
+		("blend-file,blend,bf", boost::program_options::value(&optionValues.blend_files), "Blend images")
 		;
 	boost::program_options::variables_map vm;
 
@@ -55,6 +57,22 @@ namespace gen {
 			exit(0);
 		}
 		return optionValues;
+	}
+
+	namespace {
+	}
+	void ProcessOptions() {
+		using namespace ::boost::gil;
+		typedef boost::mpl::vector< gray8_image_t
+			, gray16_image_t
+			, rgb8_image_t
+			, rgba8_image_t
+		> my_img_types;
+		//any_image<my_img_types> runtime_image;
+		//packed_pixel_dynamic_image img;
+		//for (auto& blendFilePath : optionValues.blend_files) {
+		//	png_read_and_convert_image(blendFilePath, runtime_image);
+		//}
 	}
 
 	const Valuable::va_names_t& InitialVarNames() {
