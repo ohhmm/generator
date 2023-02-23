@@ -10,9 +10,9 @@ set(deplist
 	libjpeg-turbo/libjpeg-turbo
 	libjpeg-turbo::turbojpeg-static
 
-	madler/zlib
+	madler/ZLIB
 
-	glennrp/libpng
+	glennrp/libPNG
 	PNG::PNG_STATIC
 	)
 
