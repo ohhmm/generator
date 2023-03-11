@@ -21,6 +21,7 @@ namespace {
 	DECL_VA(n);
 	DECL_VA(was);
 	DECL_VA(Result);
+	
 
 	Valuable::va_names_t Names = {
 		{"i", i},
@@ -45,9 +46,9 @@ namespace {
 
 namespace gen {
 
-std::shared_ptr<boost::program_options::options_description> Optr(){
-    return OptionsPtr;
-}
+	std::shared_ptr<boost::program_options::options_description> Optr(){
+		return OptionsPtr;
+	}
 
 	boost::program_options::options_description_easy_init& ProgramOptionsDescription() {
 		return desc;
@@ -215,4 +216,5 @@ std::shared_ptr<boost::program_options::options_description> Optr(){
 		gen::Generate(y, (uint32_t*)p, width * height);
 		return img;
 	}
-}
+
+} // namespace gen

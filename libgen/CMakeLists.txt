@@ -5,7 +5,7 @@ endif()
 option(PNG_STATIC "Build static lib" ON)
 
 set(deplist 
-	math
+	libskrypt
 
 	libjpeg-turbo/libjpeg-turbo
 	libjpeg-turbo::turbojpeg-static

@@ -13,6 +13,7 @@ option(OPENMIND_MATH_USE_LEVELDB_CACHE "Cache calculation results with LevelDB" 
 
 set(OPENMIND_VERSION_TAG main CACHE STRING "OpenMind library version to use")
 set(OPENMIND_VERSION_TAG generator CACHE STRING "OpenMind library version to use")
+set(SKRYPT_VERSION_TAG main CACHE STRING "SKRYPT library version to use")
 
 # Tell OpenMind to use any boost version installed in the system if any
 find_package(Boost)
@@ -32,10 +33,10 @@ endif()
 
 # Fetch some OpenMind
 include(FetchContent)
-FetchContent_Declare(openmind
-    GIT_REPOSITORY https://github.com/ohhmm/openmind.git
-    GIT_TAG ${OPENMIND_VERSION_TAG})
-FetchContent_MakeAvailable(openmind)
+FetchContent_Declare(skrypt
+    GIT_REPOSITORY https://github.com/ohhmm/skrypt.git
+    GIT_TAG ${SKRYPT_VERSION_TAG})
+FetchContent_MakeAvailable(skrypt)
 
 # Include sub-projects, base component 'libgen' goes first.
 fold(
