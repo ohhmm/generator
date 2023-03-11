@@ -7,7 +7,8 @@
 	"context": "..",
 
 	// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
-	"dockerFile": "Dockerfile",
+	//"dockerFile": "Dockerfile",
+	"image": "ohhmm/generator",
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
