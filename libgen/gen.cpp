@@ -4,14 +4,24 @@
 using namespace omnn::math;
 
 #include <boost/archive/binary_oarchive.hpp>
+
 #include <boost/compute.hpp>
 #include <boost/compute/core.hpp>
+
 #include <boost/filesystem.hpp>
+
+#include <boost/gil.hpp>
+
 #include <boost/lambda2.hpp>
+
 #include <boost/mpl/vector.hpp>
+
 #include <boost/multiprecision/cpp_int.hpp>
+
 #include <boost/program_options.hpp>
+
 #include <boost/serialization/vector.hpp>
+
 #include "gen.h"
 
 
