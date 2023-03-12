@@ -18,7 +18,7 @@ set(SKRYPT_VERSION_TAG main CACHE STRING "SKRYPT library version to use")
 # Tell OpenMind to use any boost version installed in the system if any
 find_package(Boost)
 if(Boost_FOUND)
-    set(OPENMIND_REQUIRED_BOOST_VERSION ${Boost_VERSION} CACHE STRING "Boost library version to use")
+    set(OPENMIND_REQUIRED_BOOST_VERSION ${Boost_VERSION_STRING} CACHE STRING "Boost library version to use")
 endif()
 set(BOOST_ADDITIONAL_COMPONENTS program_options CACHE STRING "Boost components")
 
