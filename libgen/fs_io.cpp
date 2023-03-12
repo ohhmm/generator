@@ -6,7 +6,11 @@
 #include <boost/gil/extension/io/png.hpp>
 #include <boost/gil/extension/io/jpeg.hpp>
 
+#include <fstream>
+
+
 using namespace ::gen::io::fs;
+
 
 bool Save(const ::boost::gil::rgba8_image_t& img, const ::boost::filesystem::path& filepath)
 {
@@ -16,7 +20,7 @@ bool Save(const ::boost::gil::rgba8_image_t& img, const ::boost::filesystem::pat
     if(ext.empty()){
         auto pngFilePath = filepath;
         pngFilePath.replace_extension(".png");
-        success = Save(img, pngFilePath);
+        success = ::gen::io::fs::Save(img, pngFilePath);
     }
     else {
         auto v = boost::gil::const_view(img);
