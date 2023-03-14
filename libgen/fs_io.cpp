@@ -12,7 +12,7 @@
 using namespace ::gen::io::fs;
 
 
-bool Save(const ::boost::gil::rgba8_image_t& img, const ::boost::filesystem::path& filepath)
+bool ::gen::io::fs::Save(const ::boost::gil::rgba8_image_t& img, const ::boost::filesystem::path& filepath)
 {
     bool success = true;
     
