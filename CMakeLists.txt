@@ -3,9 +3,9 @@ cmake_minimum_required (VERSION 3.8)
 
 # Select C++ active standard
 enable_language(CXX)
-set (CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+set (CMAKE_CXX_STANDARD 23)
+set (CMAKE_CXX_STANDARD_REQUIRED ON)
+set (CMAKE_CXX_EXTENSIONS OFF)
 
 option(OPENMIND_DEBUG_CHECKS "Additional debug checks" OFF)
 set(OPENMIND_USE_OPENCL ON CACHE BOOL "OpenCL GPU calculations" FORCE)
@@ -18,7 +18,8 @@ set(SKRYPT_VERSION_TAG main CACHE STRING "SKRYPT library version to use")
 # Tell OpenMind to use any boost version installed in the system if any
 find_package(Boost)
 if(Boost_FOUND)
-    set(OPENMIND_REQUIRED_BOOST_VERSION ${Boost_VERSION_STRING} CACHE STRING "Boost library version to use")
+	message("Boost_VERSION_STRING: ${Boost_VERSION_STRING}")
+    set(OPENMIND_REQUIRED_BOOST_VERSION "${Boost_VERSION_STRING}" CACHE STRING "Boost library version to use")
 endif()
 set(BOOST_ADDITIONAL_COMPONENTS program_options CACHE STRING "Boost components")
 
