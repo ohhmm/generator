@@ -26,9 +26,10 @@ PatternRelationSystem::PatternRelationSystem()
 }
 
 PatternRelationSystem::PatternRelationSystem(std::istream& in)
-: base(in)
+: base()
 {
     Init();
+	Load(in);
 }
 
 void PatternRelationSystem::Ask(const omnn::math::Variable& v)

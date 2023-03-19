@@ -13,6 +13,11 @@ namespace gen {
 
         void Init();
 
+        bool GlobalVarHost = [&](){
+            SetVarhost(::omnn::math::VarHost::Global<std::string>().shared_from_this());
+            return true;
+        }();
+
     public:
         DECL_VA(x); DECL_VA(y);
         DECL_VA(w); DECL_VA(width);
