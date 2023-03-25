@@ -34,8 +34,9 @@ PatternRelationSystem::PatternRelationSystem(std::istream& in)
 
 void PatternRelationSystem::Ask(const omnn::math::Variable& v)
 {
-	std::cout << "What would be the " << v << '?' << std::endl;
+	std::cout << "\nWhat would be the " << v << '?' << std::endl;
 	std::string line;
+	do {
 	std::cin >> line;
 	if(!line.empty())
 		Add(v.Equals({ line, GetVarHost() }));
@@ -44,12 +45,18 @@ void PatternRelationSystem::Ask(const omnn::math::Variable& v)
 		std::cin >> line;
 		Add({ line, GetVarHost() });
 	}
+	} while (line.empty());
 }
 
 omnn::math::Valuable PatternRelationSystem::Get(const omnn::math::Variable& v)
 {
 	for (;;)
 	{
+		auto known = Known(v);
+		if (known.size()) {
+			return *known.cbegin();
+		}
+
 		try {
 			solutions_t solutions;
 			solutions = Solve(v);
@@ -70,7 +77,7 @@ omnn::math::Valuable PatternRelationSystem::Get(const omnn::math::Variable& v)
 		{
 		}
 
-		Ask(width);
+		Ask(v);
 	}
 }
 
