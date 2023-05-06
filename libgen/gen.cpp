@@ -124,7 +124,7 @@ namespace gen {
 	}
 
 
-	bool Generate(const Valuable& pattern, float* data, unsigned wgsz) {
+	bool Generate(const Valuable& pattern, float* data, size_t wgsz) {
 		// build OpenCL kernel
 		auto& ComputeUnitsWinner = omnn::rt::GetComputeUnitsWinnerDevice();
 		boost::compute::context context(ComputeUnitsWinner);
@@ -151,7 +151,7 @@ namespace gen {
 		return true;
 	}
 
-	bool Generate(const Valuable& pattern, uint32_t* data, unsigned wgsz) {
+	bool Generate(const Valuable& pattern, uint32_t* data, size_t wgsz) {
 		// build OpenCL kernel
 		auto& ComputeUnitsWinner = omnn::rt::GetComputeUnitsWinnerDevice();
 		boost::compute::context context(ComputeUnitsWinner);
@@ -190,9 +190,14 @@ namespace gen {
 			{"N"_va, N},
 			{Result, was},
 		};
-		r.eval(vars);
-		g.eval(vars);
-		b.eval(vars);
+		{
+#ifdef NOOMDEBUG
+			Valuable::OptimizeOff oo;
+#endif
+			r.eval(vars);
+			g.eval(vars);
+			b.eval(vars);
+		}
 		constexpr auto alpha = 0xff;
 
 		// FIXME: slow masks
