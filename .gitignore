@@ -43,3 +43,5 @@
 Db*.solutions/
 
 /enc_temp_folder
+/Default/
+/CMakeLists.txt.user
