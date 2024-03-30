@@ -130,7 +130,7 @@ namespace gen {
 		boost::compute::context context(ComputeUnitsWinner);
 		boost::compute::command_queue queue(context, ComputeUnitsWinner);
 		auto code = pattern.OpenCL();
-#ifndef NOOMDEBUG
+#if !defined(NDEBUG) && !defined(NOOMDEBUG)
 		std::cout << pattern << " >>> OpenCl >>> " << code << std::endl;
 #endif // !NOOMDEBUG
 		boost::compute::kernel k(boost::compute::program::build_with_source(code, context), "f");
@@ -157,7 +157,7 @@ namespace gen {
 		boost::compute::context context(ComputeUnitsWinner);
 		boost::compute::command_queue queue(context, ComputeUnitsWinner);
 		auto code = pattern.OpenCLuint();
-#ifndef NOOMDEBUG
+#if !defined(NDEBUG) && !defined(NOOMDEBUG)
 		std::cout << pattern << " >>> OpenCl >>> " << code << std::endl;
 #endif // !NOOMDEBUG
 		boost::compute::kernel k(boost::compute::program::build_with_source(code, context), "f");
@@ -191,7 +191,7 @@ namespace gen {
 			{Result, was},
 		};
 		{
-#ifdef NOOMDEBUG
+#if !defined(NDEBUG) && !defined(NOOMDEBUG)
 			Valuable::OptimizeOff oo;
 #endif
 			r.eval(vars);

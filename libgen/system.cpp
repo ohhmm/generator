@@ -98,10 +98,10 @@ boost::gil::rgba8_image_t PatternRelationSystem::GeneratePatternImage()
 
 			using namespace boost::gil;
 			auto& px = view(row, col);
-			get_color(px, alpha_t()) = boost::numeric_cast<uint8_t>(Get(alpha).ca());;
-			get_color(px, blue_t()) = boost::numeric_cast<uint8_t>(Get(blue).ca());;
-			get_color(px, green_t()) = boost::numeric_cast<uint8_t>(Get(green).ca());;
-			get_color(px, red_t()) = boost::numeric_cast<uint8_t>(Get(red).ca());;
+			get_color(px, alpha_t()) = boost::numeric_cast<uint8_t>(copy.Get(alpha).ca());;
+			get_color(px, blue_t()) = boost::numeric_cast<uint8_t>(copy.Get(blue).ca());;
+			get_color(px, green_t()) = boost::numeric_cast<uint8_t>(copy.Get(green).ca());;
+			get_color(px, red_t()) = boost::numeric_cast<uint8_t>(copy.Get(red).ca());;
 		}
     }
     return img;
