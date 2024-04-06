@@ -65,7 +65,8 @@ jobs:
         -S ${{ github.workspace }}
 
     - name: Build prerequisites
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Release --target prerequisites
+        run: >
+          cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Release --target prerequisites
 
     - name: Re-Configure CMake to detect built prerequisites
         run: >
