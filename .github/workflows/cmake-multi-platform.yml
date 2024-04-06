@@ -2,7 +2,7 @@
 # See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
 name: CMake on multiple platforms
 
-on:: [push]
+on: [push]
 
 jobs:
   build:
@@ -61,16 +61,16 @@ jobs:
         -S ${{ github.workspace }}
 
     - name: Build prerequisites
-        run: >
-          cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Release --target prerequisites
+      run: >
+        cmake --build ${{ steps.strings.outputs.build-output-dir }} --target prerequisites
 
     - name: Re-Configure CMake to detect built prerequisites
-        run: >
-          cmake -B ${{ steps.strings.outputs.build-output-dir }}
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
 
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }}
 
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
