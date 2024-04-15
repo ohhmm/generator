@@ -97,7 +97,7 @@ boost::gil::rgba8_image_t PatternRelationSystem::GeneratePatternImage()
 			copy.Eval(y, row);
 
 			using namespace boost::gil;
-			auto& px = view(row, col);
+			auto& px = view(col, row);
 			get_color(px, alpha_t()) = boost::numeric_cast<uint8_t>(copy.Get(alpha).ca());;
 			get_color(px, blue_t()) = boost::numeric_cast<uint8_t>(copy.Get(blue).ca());;
 			get_color(px, green_t()) = boost::numeric_cast<uint8_t>(copy.Get(green).ca());;
