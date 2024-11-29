@@ -10,10 +10,12 @@ set(deplist
     Boost::filesystem
     Boost::program_options
     Boost::serialization
-
-	libjpeg-turbo/libjpeg-turbo
-	libjpeg-turbo::turbojpeg-static
 	)
+if(NOT OPENMIND_USE_VCPKG)
+	set(deplist ${deplist}
+		libjpeg-turbo/libjpeg-turbo
+		libjpeg-turbo::turbojpeg-static)
+endif()
 
 if(NOT PNG_FOUND)
 	find_package(PNG)
@@ -37,3 +39,10 @@ else()
 endif()
 
 lib(${deplist})
+
+if(OPENMIND_USE_VCPKG)
+	find_package(libjpeg-turbo CONFIG REQUIRED)
+	target_link_libraries(${this_target} PUBLIC
+		$<IF:$<TARGET_EXISTS:libjpeg-turbo::turbojpeg-static>,libjpeg-turbo::turbojpeg-static,libjpeg-turbo::turbojpeg>
+	)
+endif()

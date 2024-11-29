@@ -22,7 +22,9 @@
     "boost-thread",
     "boost-uuid",
     "leveldb",
+    "libjpeg-turbo",
     "libpng",
+    "opencl",
     "zlib",
     {
       "name": "vcpkg-cmake",
