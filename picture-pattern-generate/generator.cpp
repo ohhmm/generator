@@ -42,6 +42,11 @@ int main(int argc, char** argv)
 
 	std::cout << "Image pattern (formulas for channels of width, height, x, y):" << std::endl;
 	auto names = gen::InitialVarNames();
+	auto less = "x"_va.IntMod_Less("y"_va);
+	std::cout << "X<Y: " << less << std::endl;
+	std::cout << "bool X<Y: ..."
+		//<< less.ToBool()
+		<< std::endl;
 	auto varhost = names.begin()->second.getVaHost();
 	Valuable red(StdIn("Red(w,h,x,y)"), varhost, true);
 	Valuable green(StdIn("Green(w,h,x,y)"), varhost, true);
