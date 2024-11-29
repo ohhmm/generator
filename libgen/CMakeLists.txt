@@ -7,6 +7,10 @@ option(PNG_STATIC "Build static lib" ON)
 set(deplist 
 	libskrypt
 
+    Boost::filesystem
+    Boost::program_options
+    Boost::serialization
+
 	libjpeg-turbo/libjpeg-turbo
 	libjpeg-turbo::turbojpeg-static
 	)
